@@ -1,19 +1,20 @@
+export const config = {
+  api: {
+    bodyParser: true, // Enables JSON body parsing
+  },
+};
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Only POST requests allowed' });
-  }
+  if (req.method === 'POST') {
+    const { shortPain, longPain, symbol } = req.body;
 
-  try {
-    const { longPain, shortPain, symbol } = req.body;
-
-    console.log("📨 Webhook received:");
+    console.log("✅ Webhook received");
     console.log("Symbol:", symbol);
     console.log("Long Max Pain:", longPain);
     console.log("Short Max Pain:", shortPain);
 
-    return res.status(200).json({ message: 'Webhook received successfully' });
-  } catch (err) {
-    console.error("❌ Error processing webhook:", err);
-    return res.status(500).json({ message: 'Server error' });
+    return res.status(200).json({ message: "Data received" });
+  } else {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 }
